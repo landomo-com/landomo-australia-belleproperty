@@ -1,8 +1,11 @@
 import type { AustralianState, PropertyListing, ScraperOptions, ScraperResult } from './types.js';
 import { parseListingsPage, hasNextPage, getNextPageNumber } from './parser.js';
-import { createLogger } from '../../../shared/logger';
 
-const logger = createLogger('module');
+// Simple logger implementation
+const logger = {
+  info: (message: string) => console.log(message),
+  error: (message: string) => console.error(message),
+};
 
 const BASE_URL = 'https://www.belleproperty.com/listings';
 const USER_AGENT = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';

@@ -3,9 +3,18 @@
 import { Command } from 'commander';
 import { scrapeListings } from './scraper.js';
 import { AUSTRALIAN_STATES, type AustralianState, type ScraperOptions } from './types.js';
-import { createLogger } from '../../../shared/logger';
 
-const logger = createLogger('module');
+// Simple logger implementation
+const logger = {
+  info: (message: string, data?: any) => {
+    if (data !== undefined) {
+      console.log(message, JSON.stringify(data, null, 2));
+    } else {
+      console.log(message);
+    }
+  },
+  error: (message: string) => console.error(message),
+};
 
 const program = new Command();
 
@@ -59,7 +68,7 @@ program
         logger.info('---');
       } else {
         // JSON output
-        logger.info('Data dump', result));
+        logger.info('Data dump', result);
       }
 
       logger.info(`\nTotal listings scraped: ${result.totalListings}`);

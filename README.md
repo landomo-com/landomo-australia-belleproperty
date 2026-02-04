@@ -1,13 +1,13 @@
-# Landomo Scraper: australia - belleproperty
+# Landomo Scraper: Australia - Belle Property
 
-Scraper for **belleproperty_NAME** in **australia_NAME**.
+Scraper for **Belle Property** in **Australia**.
 
 ## Overview
 
-This scraper extracts real estate listings from belleproperty_NAME and sends them to the Landomo Core Service for standardization and storage.
+This scraper extracts real estate listings from Belle Property and sends them to the Landomo Core Service for standardization and storage.
 
-**Portal URL**: https://belleproperty_URL
-**Country**: australia_NAME
+**Portal URL**: https://www.belleproperty.com
+**Country**: Australia
 **Status**: Development
 
 ## Quick Start
@@ -35,15 +35,26 @@ This scraper extracts real estate listings from belleproperty_NAME and sends the
 
 ## Configuration
 
-See `.env.example` for all configuration options.
+### Command Line Options
 
-Required:
-- `LANDOMO_API_KEY` - API key for Landomo Core Service
+```bash
+# Filter by state
+npm start -- --state NSW
 
-Optional:
-- `DEBUG=true` - Enable debug logging
-- `REQUEST_DELAY_MS` - Delay between requests (default: 1000ms)
-- Proxy configuration for bypassing geo-restrictions
+# Filter by property type
+npm start -- --type house
+
+# Limit number of results
+npm start -- --limit 50
+
+# Output as table
+npm start -- --output table
+
+# Combined options
+npm start -- --state VIC --type apartment --limit 100
+```
+
+Available states: NSW, VIC, QLD, WA, SA, TAS, ACT, NT
 
 ## Architecture
 
@@ -55,42 +66,43 @@ Portal → Scraper → Transformer → Core Service → Core DB
 
 ### Files
 
-- `src/scraper.ts` - Main scraping logic
-- `src/transformer.ts` - Portal data → StandardProperty conversion
+- `src/index.ts` - CLI entry point and command handling
+- `src/scraper.ts` - Main scraping logic with pagination
+- `src/parser.ts` - HTML parsing and data extraction
 - `src/types.ts` - TypeScript type definitions
-- `src/config.ts` - Configuration management
 
 ## Development
 
 ### Testing
 
 ```bash
-# Run tests
+# Run with limit to test quickly
 npm test
 
-# Run tests in watch mode
-npm run test:watch
-```
-
-### Type Checking
-
-```bash
-npm run type-check
-```
-
-### Linting
-
-```bash
-npm run lint
+# This runs: tsx src/index.ts --limit 40
 ```
 
 ## Portal-Specific Notes
 
-TODO: Add any portal-specific information:
-- Authentication requirements
-- Rate limiting details
-- Known issues or quirks
-- Bot detection handling
+**Belle Property** (www.belleproperty.com) is an Australian real estate agency network.
+
+### Scraping Details
+
+- **Method**: HTML scraping with Cheerio
+- **Authentication**: Not required
+- **Rate Limiting**: 1 second delay between requests (configurable)
+- **Pagination**: Query parameter based (`pg=1`, `pg=2`, etc.)
+- **Geographic Coverage**: All Australian states (NSW, VIC, QLD, WA, SA, TAS, ACT, NT)
+
+### Data Extracted
+
+- Property address (street + suburb)
+- Price (displayed text or "Contact Agent")
+- Bedrooms, bathrooms, car spaces
+- Property type (House, Apartment, Unit, Land)
+- Status (For Sale, Sold, Leased, etc.)
+- Property images
+- Listing URL
 
 ## Deployment
 
