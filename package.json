@@ -1,0 +1,19 @@
+{
+  "name": "@landomo/scraper-australia-belleproperty",
+  "version": "1.0.0",
+  "description": "Scraper for Belle Property Australia listings",
+  "type": "module",
+  "scripts": {
+    "start": "tsx src/index.ts",
+    "test": "tsx src/index.ts --limit 40"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0",
+    "commander": "^12.1.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "tsx": "^4.19.0",
+    "typescript": "^5.6.0"
+  }
+}
